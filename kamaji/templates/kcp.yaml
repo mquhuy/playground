@@ -1,9 +1,9 @@
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
 kind: KamajiControlPlane
 metadata:
-  name: kamaji-1
+  name: {{ .Values.cluster.name }}
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.222.150
+    metallb.universe.tf/loadBalancerIPs: {{ .Values.serviceAddress }}
 spec:
   dataStoreName: default
   kubelet:
@@ -17,7 +17,7 @@ spec:
     kubeProxy: { }
   network:
     serviceType: LoadBalancer
-    serviceAddress: 192.168.222.150
+    serviceAddress: {{ .Values.serviceAddress }}
   deployment:
   replicas: 2
   version: 1.28.5

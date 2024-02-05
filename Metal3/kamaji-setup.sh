@@ -23,7 +23,7 @@ clusterctl init --control-plane kamaji
 kubectl wait --for=condition=Available --timeout=300s -n baremetal-operator-system deployment baremetal-operator-controller-manager
 kubectl wait --for=condition=Available --timeout=300s -n baremetal-operator-system deployment ironic
 
-NUM_BMH=1 ./Metal3/create-bmhs.sh
+NUM_BMH=5 ./Metal3/create-bmhs.sh
 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
 
@@ -36,4 +36,8 @@ helm repo add clastix https://clastix.github.io/charts
 helm repo update
 helm install kamaji clastix/kamaji -n kamaji-system --create-namespace
 
-kubectl apply -k Metal3/kamaji
+kubectl apply -f Metal3/kamaji/ippool.yaml
+
+for i in $(seq 1 2); do
+  helm install "kamaji-${i}" kamaji --set cluster.name="kamaji-${i}" --set serviceAddress=192.168.222.$(( 149 + i )) --debug
+done

@@ -1,0 +1,18 @@
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfigTemplate
+metadata:
+  name: {{ .Values.cluster.name }}-workers
+  namespace: default
+spec:
+  template:
+    spec:
+      joinConfiguration:
+        nodeRegistration:
+          name: {{ quote "{{ ds.meta_data.name }}" }}
+          kubeletExtraArgs:
+            node-labels: {{ quote "metal3.io/uuid={{ ds.meta_data.uuid }}" }}
+      users:
+        - name: ubuntu
+          sudo: 'ALL=(ALL) NOPASSWD:ALL'
+          sshAuthorizedKeys:
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF3XsjgwkAkxd5aioPiBws7O5nx5ofcR4TvAIOvSQ9Ce lennart

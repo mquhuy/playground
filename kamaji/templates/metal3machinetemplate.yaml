@@ -1,0 +1,35 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3MachineTemplate
+metadata:
+  name: {{ .Values.cluster.name }}-workers-v1-28-2
+  namespace: default
+spec:
+  nodeReuse: false
+  template:
+    spec:
+      automatedCleaningMode: disabled
+      dataTemplate:
+        name: {{ .Values.cluster.name }}-workers-template
+      image:
+        checksum: http://192.168.222.1/ubuntu-2204-kube-v1.28.1.raw_sha256sum
+        checksumType: sha256
+        format: raw
+        url: http://192.168.222.1/ubuntu-2204-kube-v1.28.1.raw
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3MachineTemplate
+metadata:
+  name: {{ .Values.cluster.name }}-workers-v1-28-4
+  namespace: default
+spec:
+  nodeReuse: false
+  template:
+    spec:
+      automatedCleaningMode: disabled
+      dataTemplate:
+        name: {{ .Values.cluster.name }}-workers-template
+      image:
+        checksum: http://192.168.222.1/ubuntu-2204-kube-v1.28.1.raw_sha256sum
+        checksumType: sha256
+        format: raw
+        url: http://192.168.222.1/ubuntu-2204-kube-v1.28.1.raw
