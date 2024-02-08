@@ -1,12 +1,10 @@
-{{- range .Values.clusters }}
----
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3DataTemplate
 metadata:
-  name: {{ .name }}-workers-template
+  name: {{ .Values.cluster.name }}-workers-template
   namespace: default
 spec:
-  clusterName: {{ .name }}
+  clusterName: {{ .Values.cluster.name }}
   metaData:
     gatewaysFromIPPool:
     - apiGroup: ipam.metal3.io
@@ -33,5 +31,4 @@ spec:
       key: Prefix_For_Net_ipv4
       kind: IPPool
       name: netpool-ipv4-kamaji-1
-  templateReference: {{ .name }}-workers
-{{- end }}
+  templateReference: {{ .Values.cluster.name }}-workers

@@ -1,9 +1,7 @@
-{{- range .Values.clusters }}
----
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
-  name: {{ .name }}
+  name: {{ .Values.cluster.name }}
   namespace: default
 spec:
   clusterNetwork:
@@ -16,11 +14,10 @@ spec:
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: Metal3Cluster
-    name: {{ .name }}
+    name: {{ .Values.cluster.name }}
     namespace: default
   controlPlaneRef:
     kind: KamajiControlPlane
     apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-    name: {{ .name }}
+    name: {{ .Values.cluster.name }}
     namespace: default
-{{- end }}

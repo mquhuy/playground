@@ -5,8 +5,11 @@ set -eux
 REPO_ROOT=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
 cd "${REPO_ROOT}" || exit 1
 
+export KUBECONFIG=$HOME/.kube/config
+minikube config set cpus 8
+minikube config set memory 16384
 # Set up minikube
-minikube start --driver=kvm2
+minikube start --driver=kvm2 -p minikube
 
 virsh -c qemu:///system net-define "${REPO_ROOT}/Metal3/net.xml"
 virsh -c qemu:///system net-start baremetal-e2e

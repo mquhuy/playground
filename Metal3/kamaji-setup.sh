@@ -38,6 +38,9 @@ helm install kamaji clastix/kamaji -n kamaji-system --create-namespace
 
 kubectl apply -f Metal3/kamaji/ippool.yaml
 
-for i in $(seq 1 2); do
-  helm install "kamaji-${i}" kamaji --set cluster.name="kamaji-${i}" --set serviceAddress=192.168.222.$(( 149 + i )) --debug
+# helm install kamaji kamaji
+for i in $(seq 1 5); do
+  helm install "kamaji-${i}" kamaji-bk --set cluster.name="kamaji-${i}" --set serviceAddress=192.168.222.$(( 149 + i )) --debug
 done
+
+kind create cluster

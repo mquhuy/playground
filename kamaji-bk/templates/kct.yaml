@@ -1,10 +1,7 @@
-{{- $root := . -}}
-{{- range .Values.clusters }}
----
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: KubeadmConfigTemplate
 metadata:
-  name: {{ .name }}-workers
+  name: {{ .Values.cluster.name }}-workers
   namespace: default
 spec:
   template:
@@ -18,7 +15,4 @@ spec:
         - name: ubuntu
           sudo: 'ALL=(ALL) NOPASSWD:ALL'
           sshAuthorizedKeys:
-          {{- range $i, $e := $root.Values.sshKeys }}
-          - {{ $e }}
-          {{- end }}
-{{- end }}
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF3XsjgwkAkxd5aioPiBws7O5nx5ofcR4TvAIOvSQ9Ce lennart

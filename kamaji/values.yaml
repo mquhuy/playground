@@ -1,3 +1,14 @@
-cluster:
-  name: kamaji-1
-serviceAddress: 192.168.222.150
+clusters:
+- name: kamaji-1
+  serviceAddress: 192.168.222.150
+- name: kamaji-2
+  serviceAddress: 192.168.222.151
+- name: kamaji-3
+  serviceAddress: 192.168.222.152
+- name: kamaji-4
+  serviceAddress: 192.168.222.153
+- name: kamaji-5
+  serviceAddress: 192.168.222.154
+
+sshKeys:
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5kcPprzNn8UEtOauwb5+wqWqAjy6ZFzAaf1ipeo11kGSpDwuyYCuNhVLAzUy07OsKaG/2PVDJ4p8EMVtWT+8jSI1gnF499Z/v8AahLEWzbxP3d/1aaiEIn7bxSq/CI0jtYPHydzAobCNz/DuP0+rGBtk5mY27rxpMRdLZ68que7uyJPbgi3VWyevHio7MgFbYYZhGmcboWUYQxMwkrDXZsIVqh2oiseBO0a0WCYPVkgi8PdXGPEAy490TFMP28u6f6gVvwWHy7QdqX+iBVSoDCYhPtVpfQd/nQJh9VEwk/lFLvGKUYYka+5Eade9rtI8yxiwKM38ZNuJc4MuLw8uFx+9skJDdWWgXF9q1pWREIuRz1lUE4p8l/JqkUv85G4854FC1TSQMQ1/oehd5hiBNGIxGm36euD316tJ8qZcCs1GSVbcqlchoqJtZmXCpSqgtnGR4LUrChsWG2aPX5gWvnaP/84R02pdivTNtXldqwtVZjYniW4RR4WZETs5wSMk= huy@HuyMai-EST

@@ -1,13 +1,10 @@
-{{- range .Values.clusters }}
----
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3Cluster
 metadata:
-  name: {{ .name }}
+  name: {{ .Values.cluster.name }}
   namespace: default
 spec:
   controlPlaneEndpoint:
-    host: {{ .serviceAddress }}
+    host: {{ .Values.serviceAddress }}
     port: 6443
   noCloudProvider: true
-{{- end }}
