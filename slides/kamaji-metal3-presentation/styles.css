@@ -7,27 +7,46 @@ body {
 	background: rgba(0, 0, 0, 0) !important;
 }
 
+.slides {
+	max-height: 30vh !important;
+	height: 100% !important;
+}
+
+.slides section.l-cover {
+	margin-top: 0 !important;
+}
+
 #logos p {
 	display: flex;
 	width: 100%;
+	text-align: center;
 }
+
 #logos p img {
-	margin: 50px;
 	position: relative;
 	width: 6vw;
 	height: 6vw;
+	background-color: white;
+	margin: 10px;
 }
+
 .left {
 	margin: 10px 0 15px 0;
 	text-align: left;
 	float: left;
 	z-index:-10;
 	width:48%;
+	line-height: 2.5 !important; 
+}
+
+.left img {
+	background-color: white;
+	max-width: 100%;
 }
 
 section a {
 	text-decoration: none !important;
-	color: #fff !important;
+	background-color: white;
 }
 
 .right {
@@ -37,6 +56,7 @@ section a {
 	text-align: left;
 	z-index:-10;
 	width:48%;
+	line-height: 2.5 !important; 
 }
 
 .right ul {
@@ -48,7 +68,6 @@ li a {
 }
 
 img {
-	margin-top: 5px !important;
 	max-height: 40vh !important;
 }
 

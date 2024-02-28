@@ -1,5 +1,5 @@
 ---
-title: Scale Baremetal Operations with Kamaji, Metal3 and Karmada
+title: Scale Baremetal Operations with Metal3, Kamaji and Karmada
 theme: https://rawgit.com/puzzle/pitc-revealjs-theme/master/theme/puzzle.css
 css: styles.css
 revealOptions:
@@ -8,13 +8,16 @@ revealOptions:
     breaks: true
 ---
 <!-- .slide: class="l-cover" -->
-# Scale Baremetal Operations with Kamaji, Metal3 and Karmada
-
 <div id="logos">
 
 ![](images/metal3.svg)
-![](images/kamaji.jpg)
+![](images/kamaji.svg)
+![](images/karmada_logo.png)
 </div>
+
+# Scale Baremetal Operations with Metal3, Kamaji and Karmada
+## Huy Mai - Ericsson Software Tech
+
 ---
 ## About Metal3
 <!-- .slide: data-background-color="#00E0C1" -->
@@ -44,10 +47,17 @@ Ironic is the entity doing the low-level management of the baremetal nodes
 ---
 ## About Kamaji
 <!-- .slide: data-background-color="#224472" -->
-Kamaji is a Kubernetes Control Plane (CP) Manager. It manages K8s CP as "Tenant Control Plane" pods.
+<div class="left">
+
+![](images/kamaji.svg)
+</div>
+<div class="right">
+
+- Kamaji is a Kubernetes Control Plane (CP) Manager. It manages K8s CP as "Tenant Control Plane" pods.
 <!-- .element: class="fragment" -->
 https://kamaji.clastix.io/
 <!-- .element: class="fragment" -->
+</div>
 ---
 ## About Kamaji
 <!-- .slide: data-background-color="#224472" -->
@@ -77,12 +87,17 @@ https://kamaji.clastix.io/
 ![](images/kamaji-metal3-4.png)
 Note: Kamaji also provides other fine-tuning features that make resource saving even more efficient, for example, shared etcd.
 ---
-## Kamaji has these advantages
+## Kamaji's advantages
 - Save resources
+<!-- .element: class="fragment fade-in-then-semi-out" -->
 - Reduce operational burden
+<!-- .element: class="fragment fade-in-then-semi-out" -->
 - Speed up control plane management
+<!-- .element: class="fragment fade-in-then-semi-out" -->
 - Greater flexibility
+<!-- .element: class="fragment fade-in-then-semi-out" -->
 - Easy to manage: All CPs in one place
+<!-- .element: class="fragment fade-in-then-semi-out" -->
 ---
 ## Metal3 with Kamaji Setup
 - Only provision worker nodes with Metal3
