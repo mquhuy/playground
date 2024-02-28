@@ -1,5 +1,5 @@
 ---
-title: Baremetal k8s provision with Metal3 using Kamaji Control Plane provider
+title: Scale Baremetal Operations with Kamaji, Metal3 and Karmada
 theme: https://rawgit.com/puzzle/pitc-revealjs-theme/master/theme/puzzle.css
 css: styles.css
 revealOptions:
@@ -8,7 +8,7 @@ revealOptions:
     breaks: true
 ---
 <!-- .slide: class="l-cover" -->
-# Baremetal k8s provision with Metal3 using Kamaji Control Plane provider
+# Scale Baremetal Operations with Kamaji, Metal3 and Karmada
 
 <div id="logos">
 
@@ -77,44 +77,15 @@ https://kamaji.clastix.io/
 ![](images/kamaji-metal3-4.png)
 Note: Kamaji also provides other fine-tuning features that make resource saving even more efficient, for example, shared etcd.
 ---
-<!-- .slide: class="l-cover" -->
-# But doesn't having many clusters make management harder?
-#### Should we just have bigger clusters with real CP machines?
-Note: This is totally a valid concern, since managing multiple clusters is difficult. CAPI allows you to provision and manage the clusters life cycles from a central management cluser, but it does not help application level LCM on the member clusters. So, if having big, normal cluster with multiple workers works for you, then it's great. However, let's consider an example usecase.
----
-# Problem
-- Multiple Baremetal hosts
-<!-- .element: class="fragment" -->
-- Various locations, sizes and latencies
-<!-- .element: class="fragment" -->
-# Requirements
-- Centralized management
-<!-- .element: class="fragment" -->
-- Application resiliency
-<!-- .element: class="fragment" -->
-
-_Application resiliency includes the worker node's ability to continue its assigned tasks even if its connection towards the CP is broken._
-<!-- .element: class="fragment" -->
----
-# Options
-1. Normal kubernetes cluster
-<!-- .element: class="fragment fade-in-then-semi-out" -->
-1. Remote clusters
-<!-- .element: class="fragment fade-in-then-semi-out" -->
----
-## Normal kubernetes cluster
-Centralized management <span> &#x2714; </span> <!-- .element: class="fragment fade-in" -->
-Application Resiliency <span> &#x2717; </span> <!-- .element: class="fragment fade-in" -->
-Note: By default, Kubernetes has a healing mechanism to set all of a worker node's pods to "Deletion" once that worker node is not accessible, and reassign those pods to other worker nodes. When the connection to the lost worker is reestablished, all of those pods will be killed. This behavior is sometimes not desired, especially in edge networks scenarios.
----
-## Remote clusters
-
-Centralized management <span> &#x2717; </span> <!-- .element: class="fragment fade-in" -->
-Application Resiliency <span> &#x2714; </span> <!-- .element: class="fragment fade-in" -->
-Note: So the "morale" of this example is to show you that there are certain situations in which having multiple clusters is desired. But managing application level LC on many clusters at once might be a big challenge.
+## Kamaji has these advantages
+- Save resources
+- Reduce operational burden
+- Speed up control plane management
+- Greater flexibility
+- Easy to manage: All CPs in one place
 ---
 ## Metal3 with Kamaji Setup
-- Only provision worker node with Metal3
+- Only provision worker nodes with Metal3
 - Use `metallb` as a load-balancer to provide ip to Kamaji CP.
 - Provide the same IP to `Metal3Cluster`.
 Note: The exact setup did, of course, require some investigation, but in the end it was pretty straight-forward.
@@ -159,8 +130,52 @@ spec:
 ```
 ---
 # Demo: Provision Metal3 baremetal clusters with Kamaji control planes
+Note: To save time, we use recorded videos instead of live demos. The demos are recorded and play in 1x speed, but I added some time stamps, and we can fast forward using those points
 ---
 <iframe data-src="https://asciinema.org/a/643322/iframe?" id="asciicast-iframe-643322" name="asciicast-iframe-gJMGgx3h2YCYBl1tjpTGRX3Cq" scrolling="yes" allowfullscreen="true" style="overflow: hidden; margin: 0px; border: 0px; display: inline-block; width: 100%; float: none; visibility: visible; height: 1200px;"></iframe>
+Note: First frame, there's no CAPI or CAPM3 or Kamaji yet in the cluster. All we have are cert-managers, baremetal operators and ironic. These are prequisite deployments needed in a typical Metal3 workflow. We also have 4 baremetalhost objects. They are kubernetes representation of the baremetal nodes that we can use. Right now their states say "Available", which mean all them are ready to be picked up and provisioned, but none of them is provisioned yet.
+Second frame: Here we start capi+metal3+kamaji setup. I have one small script that basically run `clusterctl init` and install kamaji, then create clusters. On the rhs, we have some watch commands that check some resources. At first, most of the CRDs are not even there.
+Third frame: So after the script ends, we see that all the resources are there, and the tenant cps are starting provisioning
+Fourth: After tenant cps are provisioned, metal3 will start provisioning the workers.
+After awhile, all of them are provisioned too, and we're done. Now we can check that we have 4 clusters, and we can get kubeconfigs from each of them. When we list the nodes in each of these target clusters, we see that every one has 1 node, and we know that node is a worker since it doesn't have Control Plane role
+---
+<!-- .slide: class="l-cover" -->
+# But doesn't having many clusters make management harder?
+#### Should we just have bigger clusters with real CP machines?
+Note: This is totally a valid concern, since managing multiple clusters is difficult. CAPI allows you to provision and manage the clusters life cycles from a central management cluser, but it has only limited application level LCM on the member clusters. 
+A big reason for having multiple clusters is also multi-tenancy. Sharing one big cluster will always be less safe and have more drawbacks compared to having your own cluster.
+So, if having big, normal cluster with multiple workers works for you, then it's great. However, let's consider an example usecase.
+---
+# Problem
+- Multiple Baremetal hosts
+<!-- .element: class="fragment" -->
+- Various locations, sizes and latencies
+<!-- .element: class="fragment" -->
+# Requirements
+- Centralized management
+<!-- .element: class="fragment" -->
+- Application resiliency
+<!-- .element: class="fragment" -->
+
+_Application resiliency includes the worker node's ability to continue its assigned tasks even if its connection towards the CP is broken._
+<!-- .element: class="fragment" -->
+---
+# Options
+1. Normal kubernetes cluster
+<!-- .element: class="fragment fade-in-then-semi-out" -->
+1. Remote clusters
+<!-- .element: class="fragment fade-in-then-semi-out" -->
+---
+## Normal kubernetes cluster
+Centralized management <span> &#x2714; </span> <!-- .element: class="fragment fade-in" -->
+Application Resiliency <span> &#x2717; </span> <!-- .element: class="fragment fade-in" -->
+Note: For example, k8s has a healing mechanism to set all of a worker node's pods to "Deletion" once that worker node is not accessible, and reassign those pods to other worker nodes. When the connection to the lost worker is reestablished, all of those pods will be killed. This behavior is sometimes not desired, especially in edge networks scenarios.
+---
+## Remote clusters
+
+Centralized management <span> &#x2717; </span> <!-- .element: class="fragment fade-in" -->
+Application Resiliency <span> &#x2714; </span> <!-- .element: class="fragment fade-in" -->
+Note: So the "morale" of this example is to show you that there are certain situations in which having multiple clusters is desired. But managing application level LC on many clusters at once might be a big challenge.
 ---
 ## Multi-Cluster Management (MCM)
 - MCM is the idea of having multiple clusters managed centrally from one management cluster.
@@ -206,3 +221,7 @@ Note: This is a diagram taken from documentation of Karmada, currently one of th
 # Demo: Karmada management on Metal3+Kamaji-provisioned clusters
 ---
 <iframe data-src="https://asciinema.org/a/643323/iframe?" id="asciicast-iframe-643323" name="asciicast-iframe-gJMGgx3h2YCYBl1tjpTGRX3Cq" scrolling="yes" allowfullscreen="true" style="overflow: hidden; margin: 0px; border: 0px; display: inline-block; width: 100%; float: none; visibility: visible; height: 1200px;"></iframe>
+Note: Recall that at the end of the last demo, we have created 4 clusters, each with 1 kamaji CP and one baremetal worker, and we have exported all of these clusters kubeconfigs. Now we will run this little script, which will install karmada into the management cluster, then join the member clusters to it.
+Frame 2: After the script runs, we see that we have 4 clusters join successfully. Now we can use karmada config to check the members. You can see that all of them are in Push mode.
+I have a small note here: karmada creates a separate API server on the management cluster, that's why we use a separate kubeconfig for it. It's not a different cluster though, the Karmada cluster still uses the same resources as the original management cluster
+End.
