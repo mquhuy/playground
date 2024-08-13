@@ -10,6 +10,11 @@ body {
 .slides {
 	max-height: 30vh !important;
 	height: 100% !important;
+	width: 100% !important;
+}
+
+.slides section {
+	width: 100% !important;
 }
 
 .slides section.l-cover {
@@ -67,8 +72,8 @@ li a {
 	list-style-type: none;
 }
 
-img {
-	max-height: 40vh !important;
+section img {
+	max-height: 650px !important;
 }
 
 iframe {
